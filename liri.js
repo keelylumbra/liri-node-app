@@ -20,21 +20,7 @@ var song = "";
 
   function movie (){
 
-          if (nodeArgs[3] == undefined){
-                            movieName = "Mr.+Nobody";
-
-                          }
-
-
-
-                        // Loop through all the words in the node argument
-                        // And do a little for-loop magic to handle the inclusion of "+"s
-
-                        else {
-                        movieName = nodeArgs.slice(3).join("+");
-
-
-                        };
+         
 
 
                         // Then run a request to the OMDB API with the movie specified 
@@ -96,16 +82,7 @@ function tweets (){
 
 function tunes (){
 
-  if (nodeArgs[3] == undefined){
-    song = "The Sign Ace of Base";
-
-  }
-
-  else{
-
-    song = nodeArgs.slice(3).join(" ");
-
-  }
+ 
 
 spotifyApi.searchTracks('track:' + song)
   .then(function(data) {
@@ -146,11 +123,37 @@ if (nodeArgs[2] == "my-tweets"){
 
 
 } else if (nodeArgs[2] == "spotify-this-song"){
+   if (nodeArgs[3] == undefined){
+    song = "The Sign Ace of Base";
+
+  }
+
+  else{
+
+    song = nodeArgs.slice(3).join(" ");
+
+  }
 
   
 tunes ();
 
 }else if (nodeArgs[2] == "movie-this"){
+
+   if (nodeArgs[3] == undefined){
+                            movieName = "Mr.+Nobody";
+
+                          }
+
+
+
+                        // Loop through all the words in the node argument
+                        // And do a little for-loop magic to handle the inclusion of "+"s
+
+                        else {
+                        movieName = nodeArgs.slice(3).join("+");
+
+
+                        };
 
 
 movie ();
@@ -162,16 +165,21 @@ movie ();
 
    data = data.split(" ");
 
-   console.log(data)
+
 
 
         if (data[0] == "spotify-this-song"){
+
+          song = data.slice(1).join(" ");
           tunes()
         }
         else if (data[0] == "my-tweets"){
+
           tweets()
         }
         else if (data[0] == "movie-this"){
+
+          movieName = data.splice(1).join("+");
           movie();
         }
         else{
