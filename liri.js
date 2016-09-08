@@ -105,6 +105,8 @@ function tunes (){
 
     song = nodeArgs.slice(3).join(" ");
 
+  }
+
 spotifyApi.searchTracks('track:' + song)
   .then(function(data) {
 
@@ -133,7 +135,7 @@ spotifyApi.searchTracks('track:' + song)
 });
 }
 
-};
+
 
 
 if (nodeArgs[2] == "my-tweets"){
