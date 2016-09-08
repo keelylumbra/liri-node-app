@@ -1,8 +1,13 @@
+//require for word documents
+
 var fs = require('fs');
 
 require.extensions['.txt'] = function (module, filename) {
     module.exports = fs.readFileSync(filename, 'utf8');
 };
+
+
+// all the npm packages needed
 var Twitter = require('twitter');
 var SpotifyWebApi = require("spotify-web-api-node");
 var spotifyApi = new SpotifyWebApi();
@@ -13,17 +18,17 @@ var request = require('request');
 
 var nodeArgs = process.argv;
 
-// Create an empty variable for holding the movie name
+// Create an empty variable for holding the movie and song names
 var movieName = "";
 var song = "";
 
-
+// movie function 
   function movie (){
 
          
 
 
-                        // Then run a request to the OMDB API with the movie specified 
+                        // run a request to the OMDB API with the movie specified 
                         var queryUrl = 'http://www.omdbapi.com/?t="' + movieName + '"&y=&plot=short&tomatoes=true&r=json';
 
                         // This line is just to help us debug against the actual URL.  
@@ -33,8 +38,8 @@ var song = "";
                             // If the request is successful (i.e. if the response status code is 200)
                             if (! error && response.statusCode == 200) {
 
-                                // Parse the body of the site and recover just the imdbRating
-                                // (Note: The syntax below for parsing isn't obvious. Just spend a few moments dissecting it).
+                                // Parse the body of the site and recover just whats needed
+                                
                                 console.log("Title: " + JSON.parse(body)["Title"]);
                                 console.log("Release Year: " + JSON.parse(body)["Year"]);
                                 console.log("IMDB Rating: " + JSON.parse(body)["imdbRating"]);
@@ -46,13 +51,17 @@ var song = "";
                                 console.log("Rotten Tomatos URL: " + JSON.parse(body)["tomatoURL"]);
                             }
 
-
+                              // append to log
                             fs.appendFile("log.txt", (process.argv[2]+ JSON.parse(body)["tomatoURL"]));
                         });
                         }
 
 
+//twitter function
+
 function tweets (){
+
+  //keys needed
 
   var client = new Twitter({
        consumer_key: keys.twitterKeys.consumer_key,
@@ -62,6 +71,8 @@ function tweets (){
         });
 
       var params = {screen_name: 'kblumbra'};
+
+      //use my screen name = display first 20 tweets as specified, and append to log
 
       client.get('statuses/user_timeline', params, function(error, tweets, response) {
         if (!error) {
@@ -80,15 +91,17 @@ function tweets (){
     }
 
 
+//spotify function
+
 function tunes (){
 
- 
+//use spotify api 
 
 spotifyApi.searchTracks('track:' + song)
   .then(function(data) {
 
 
-
+                  //display data, append to log
 
 
                 console.log("===============================================================================");
@@ -112,7 +125,7 @@ spotifyApi.searchTracks('track:' + song)
 });
 }
 
-
+//defining which NPM to run
 
 
 if (nodeArgs[2] == "my-tweets"){
